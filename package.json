@@ -1,0 +1,23 @@
+{
+  "name": "wittybot",
+  "version": "1.0.0",
+  "description": "a ms bot with wit",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boyofgreen/wittyBot.git"
+  },
+  "author": "boyofgreen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boyofgreen/wittyBot/issues"
+  },
+  "homepage": "https://github.com/boyofgreen/wittyBot#readme",
+  "dependencies": {
+    "botbuilder": "^3.2.3",
+    "restify": "^4.1.1"
+  }
+}
