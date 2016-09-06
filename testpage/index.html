@@ -1,10 +1,66 @@
 <!DOCTYPE html>
 <html>
+<head>
+<script src="http://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
+<script>
+    
+    var myData = {
+       messages: "so we are at an impasse"
+    }
+$(document).ready(function(){
+    var conversationID = '';
+
+    $("#buttonA").click(function(){
+
+$.ajax({
+    url: 'https://directline.botframework.com/api/conversations'+conversationID,
+    headers: {
+        'Authorization':'BotConnector FCl7Fv9_UY0.cwA.oKs.b4gT1z3KNX38GA-u_Q1SQBjy3UesxRHTRo7VOrcCKOM'
+    },
+    method: 'POST',
+    dataType: 'json',
+    data: myData,
+    success: function(data){
+      if(data && data.conversationId){ 
+          conversationID = "/"+data.conversationId+"/messages";
+      console.log(data.conversationId)
+      }
+    }
+  });
+
+    });
+    
+    
+    
+      $("#buttonB").click(function(){
+
+$.ajax({
+    url: 'https://directline.botframework.com/api/conversations'+conversationID,
+    headers: {
+        'Authorization':'BotConnector FCl7Fv9_UY0.cwA.oKs.b4gT1z3KNX38GA-u_Q1SQBjy3UesxRHTRo7VOrcCKOM'
+    },
+    method: 'GET',
+    success: function(data){
+   //   if(data && data.conversationId){ 
+     //     conversationID = "/"+data.conversationId+"/messages";
+      console.log(data)
+     // }
+    }
+  });
+
+    });
+});
+</script>
+</head>
 <body>
 
-<h1>My First Heading</h1>
+<button id="buttonA">Send an HTTP POST request to a page and get the result back</button>
+<button id="buttonB">Send an HTTP get request to a page and get the result back</button>
+<!--iframe src='https://webchat.botframework.com/embed/boyofgreen?s=HFxql3Ph3Lo.cwA.Shc.oBHNABkzXXhP8AEJuSJSpr-NdxMkAWREgMcG_X7C_jw'></iframe -->
 
-<p>My first paragraph.</p>
-<iframe src="https://webchat.botframework.com/embed/boyofgreen?s=Vm_HSlOGMw4.cwA.0mU.Si4BxC7BXP6YerNQ4Vup0qUWN7dU0_qYkJ_OdvRF1W8" style="height: 502px; max-height: 502px;"></iframe>
 </body>
 </html>
+
+
+
