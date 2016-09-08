@@ -21,10 +21,10 @@ server.post('/api/messages', connector.listen());
 
 
 // Create LUIS recognizer that points at our model and add it as the root '/' dialog for our Cortana Bot.
-var model = 'https://api.projectoxford.ai/luis/v1/application?id=9dbee075-2cd5-484b-acf2-52c707a91c47&subscription-key=b898ac53512b426e9d1dd84754adb94c';
-var recognizer = new builder.LuisRecognizer(model);
-var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
-bot.dialog('/', dialog);
+// var model = 'https://api.projectoxford.ai/luis/v1/application?id=9dbee075-2cd5-484b-acf2-52c707a91c47&subscription-key=b898ac53512b426e9d1dd84754adb94c';
+// var recognizer = new builder.LuisRecognizer(model);
+// var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
+// bot.dialog('/', dialog);
 
 // Add intent handlers
 dialog.matches('impasse', builder.DialogAction.send('I\' afraid so.  I can\'t compete with you physically, and you are no match for me mentally.'));
