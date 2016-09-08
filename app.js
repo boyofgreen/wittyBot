@@ -28,7 +28,7 @@ bot.dialog('/', dialog);
 
 // Add intent handlers
 dialog.matches('impasse', builder.DialogAction.send('I\' afraid so.  I can\'t compete with you physically, and you are no match for me mentally.'));
-dialog.matches('areSmart', builder.DialogAction.send('Let me put it this way.  You know Playto, Arastotal, Socroties?...morons'));
+dialog.matches('areSmart', builder.DialogAction.send('Let me put it this way.  You know Plato, Aristotle, Socrates?...morons'));
 dialog.matches('ChalangeDuel', builder.DialogAction.send('For the princess?  To the Death?   Then I accept'));
 dialog.matches('pourWine', builder.DialogAction.send('okay'));
 dialog.matches('inhaleThis', builder.DialogAction.send('I smell nothing'));
