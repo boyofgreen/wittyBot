@@ -125,7 +125,7 @@ $.ajax({
     
     
     var speakIt = function(text){
-        
+        if(window.Windows){
         // The object for controlling and playing audio.
 var audio = new Audio();
 
@@ -142,7 +142,7 @@ synth.synthesizeTextToStreamAsync(text).then(function (markersStream) {
     audio.src = URL.createObjectURL(blob, { oneTimeOnly: true });
     audio.play();
 });
-
+}
         
     };
     
