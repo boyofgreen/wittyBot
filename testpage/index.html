@@ -2,16 +2,74 @@
 <html>
 <head>
 <script src="http://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+ <style>
+     .bigPic {
+         background-image: url(maxresdefault.jpg);
+         background-position: center center;
+         background-size: cover;
+         height: 900px;
+        
+     }
+     .input-group{ margin: 10px}
+     .reply-wrapper{
+         background-image: url(bulle5.png);
+         background-position: center center;
+         background-size: contain;
+         height: 500px;
+         width:700px;
+         background-repeat: no-repeat;
+         position: absolute;
+         right: 20px;
+         padding: 100px 150px;
+         font-size: 2em;
+         font-family: "Comic Sans MS";
+     }
+  </style>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="input-group">
+        <span class="input-group-addon">enter Text</span>
+        <input type="text" class="form-control" id="textEntry" aria-label="enter text for chat">
+     <span class="input-group-btn">
+        <button class="btn btn-default" id="buttonA" type="button">Go!</button>
+      </span>
+        </div>
+    </div>
+    <div class="col-md-12 bigPic">
+        <div class="reply-wrapper"  style="display:none">
+        <div class="replyBox">inconceivable!!</div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     
     var myData = {
-       messages: "so we are at an impasse"
+       text: "so we are at an impasse"
     }
+    var currentWaterMark = 2;
+    
+    
+    
 $(document).ready(function(){
     var conversationID = '';
 
     $("#buttonA").click(function(){
+        myData.text = $("#textEntry")[0].value;
+        
+        console.log($("#textEntry")[0].value)
 
 $.ajax({
     url: 'https://directline.botframework.com/api/conversations'+conversationID,
@@ -25,7 +83,14 @@ $.ajax({
       if(data && data.conversationId){ 
           conversationID = "/"+data.conversationId+"/messages";
       console.log(data.conversationId)
-      }
+      $('.reply-wrapper')[0].style.display = 'block';
+      speakIt('inconceivable')
+      
+      }else{
+         setTimeout(callForAnswer, 500) 
+        
+          }
+          $("#textEntry")[0].value = '';
     }
   });
 
@@ -33,7 +98,7 @@ $.ajax({
     
     
     
-      $("#buttonB").click(function(){
+  var callForAnswer = function(){
 
 $.ajax({
     url: 'https://directline.botframework.com/api/conversations'+conversationID,
@@ -42,23 +107,51 @@ $.ajax({
     },
     method: 'GET',
     success: function(data){
-   //   if(data && data.conversationId){ 
-     //     conversationID = "/"+data.conversationId+"/messages";
-      console.log(data)
-     // }
-    }
+            console.log("watermark:", data.watermark)
+            if(Number(data.watermark) != currentWaterMark){
+                setTimeout(callForAnswer, 500) 
+               return
+            }else{
+                 $('.replyBox')[0].innerHTML = data.messages[data.messages.length-1].text;
+                 speakIt(data.messages[data.messages.length-1].text)
+            }
+           
+            currentWaterMark++;
+            currentWaterMark++;
+            }
   });
 
-    });
+    };
+    
+    
+    var speakIt = function(text){
+        
+        // The object for controlling and playing audio.
+var audio = new Audio();
+
+// The object for controlling the speech synthesis engine (voice).
+var synth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
+
+// Generate the audio stream from plain text.
+synth.synthesizeTextToStreamAsync(text).then(function (markersStream) {
+
+    // Convert the stream to a URL Blob.
+    var blob = MSApp.createBlobFromRandomAccessStream(markersStream.ContentType, markersStream);
+
+    // Send the Blob to the audio object.
+    audio.src = URL.createObjectURL(blob, { oneTimeOnly: true });
+    audio.play();
+});
+
+        
+    };
+    
+    
+    
+    
+    
 });
 </script>
-</head>
-<body>
-
-<button id="buttonA">Send an HTTP POST request to a page and get the result back</button>
-<button id="buttonB">Send an HTTP get request to a page and get the result back</button>
-<!--iframe src='https://webchat.botframework.com/embed/boyofgreen?s=HFxql3Ph3Lo.cwA.Shc.oBHNABkzXXhP8AEJuSJSpr-NdxMkAWREgMcG_X7C_jw'></iframe -->
-
 </body>
 </html>
 
